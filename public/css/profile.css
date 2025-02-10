@@ -1,0 +1,131 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+    display: flex;
+  flex-direction: column;
+  }
+  main{
+    height: 80vh;
+  }
+  .navbar {
+    background-color: white;
+    color: #333;
+    padding: 8px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
+  }
+
+  .navbar .logo a {
+    color: #333;
+    font-size: 1.8rem;
+    font-weight: 600;
+    text-decoration: none;
+    margin-left: 50px;}
+
+  .nav-links {
+    list-style: none;
+    display: flex;
+    gap: 5px;
+    
+    margin: 15px 20px;
+
+  }
+  .nav-icon{
+      height: 24px;
+  }
+
+  .nav-links li a {
+    color: #333;
+    font-size: 1.1rem;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    margin-right: 50px;
+    font-size: x-large;
+
+
+  }
+
+  .nav-links li a:hover {
+    color: #2c3e50;
+  }
+
+  .container {
+    background: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+  }
+  
+  h2 {
+    color: #333;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  #profileInfo {
+    background: #f1f1f1;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  #profileInfo p {
+    font-size: 16px;
+    color: #444;
+    margin: 10px 0;
+  }
+  
+  #profileInfo strong {
+    color: #222;
+  }
+  
+  .btn-primary, .btn-success, .btn-secondary {
+    width: 100%;
+    font-size: 16px;
+    padding: 10px;
+    border-radius: 8px;
+  }
+  
+  #updateProfileForm {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .footer-container {
+    text-align: center;
+    padding: 20px;
+    background: #222;
+    color: #fff;
+    position: relative;
+    width: 100%;
+    bottom: 0;
+  }
+  
+  .footer-container ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .footer-container ul li {
+    display: inline;
+    margin: 0 10px;
+  }
+  
+  .footer-container ul li a {
+    color: #ccc;
+    text-decoration: none;
+  }
+  
+  .footer-container ul li a:hover {
+    color: #fff;
+  }
+  

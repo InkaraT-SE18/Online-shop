@@ -1,0 +1,61 @@
+document.addEventListener("DOMContentLoaded", () => {
+    loadCart();
+    loadOrders();
+  });
+  
+  
+  document.getElementById("checkout-btn").addEventListener("click", async () => {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const token = localStorage.getItem("token");
+  
+    if (!token) {
+      showToast("Please log in to place an order.", "warning");
+      return;
+    }
+  
+    if (cart.length === 0) {
+      showToast("Your cart is empty.", "info");
+      return;
+    }
+  
+    const response = await fetch("/api/orders/create", {
+      method: "POST",
+      headers: { 
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}` // Передача токена
+      },
+      body: JSON.stringify({
+        products: cart,
+        totalPrice: cart.reduce((acc, item) => acc + item.price * item.quantity, 0),
+      }),
+    });
+  
+    const data = await response.json();
+  
+    if (response.ok) {
+      showToast("Order placed successfully!", "success");
+      localStorage.removeItem("cart");
+      loadCart();
+      loadOrders();
+    } else {
+      showToast(`Error placing order: ${data.message}`, "danger");
+    }
+  });
+  
+  const loadOrders = async () => {
+    const token = localStorage.getItem("token");
+  
+    if (!token) return;
+  
+    const response = await fetch("/api/orders", {
+      headers: { "Authorization": `Bearer ${token}` }
+    });
+  
+    const orders = await response.json();
+    const ordersList = document.getElementById("orders-list");
+  
+    ordersList.innerHTML = orders
+      .map((order) => `<li class="list-group-item">Product: ${order.product.name} | Status: ${order.status}</li>`)
+      .join("");
+  };
+  

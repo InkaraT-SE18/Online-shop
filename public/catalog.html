@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Catalog - Elle</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/cat.css">
+</head>
+
+<body>
+  <div id="toastContainer" class="toast-container position-fixed top-0 end-0 p-3"></div>
+  <nav class="navbar">
+    <div class="logo">
+      <a href="#">ClothingStore</a>
+    </div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="catalog.html">Catalog</a></li>
+      <li><a href="Gallery.html">Gallery</a></li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <img src="photo/person_24dp_434343_FILL0_wght600_GRAD0_opsz24.png" alt="Profile" class="nav-icon">
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <li><a class="dropdown-item" href="login.html">Login</a></li>
+          <li><a class="dropdown-item" href="register.html">Register</a></li>
+          <li><a class="dropdown-item" href="profile.html">My Profile</a></li>
+          <li><a class="dropdown-item" href="#">Logout</a></li>
+        </ul>
+      </li>
+      <li><a href="#" id="search-icon"><img src="photo/search_24dp_434343_FILL0_wght700_GRAD0_opsz24.png" alt="search" class="nav-icon"></a></li>
+      <li><a href="bag.html"><img src="photo/shopping_bag_24dp_434343_FILL0_wght600_GRAD0_opsz24.png" alt="bag" class="nav-icon"></a></li>
+    </ul>
+  </nav>
+
+  
+  <form id="search-form">
+    <input type="text" placeholder="Search..." id="search-input"/>
+    <button type="submit">Search</button>
+  </form>
+
+
+  <div id="category-buttons">
+    <button class="category-btn" data-category="all">All</button>
+    <button class="category-btn" data-category="Dresses">Dresses</button>
+    <button class="category-btn" data-category="Outwear">Outwear</button>
+    <button class="category-btn" data-category="Tops">Tops</button>
+    <button class="category-btn" data-category="Bottoms">Bottoms</button>
+    <button class="category-btn" data-category="Accessories">Accessories</button>
+  </div>
+
+
+  <div id="product-list"></div>
+
+  
+  <footer>
+    <div class="footer-container">
+      <H1>Elle</H1>
+      <p>&copy; 2024 Elle. All rights reserved.</p>
+      <ul>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Service</a></li>
+        <li><a href="#">FAQ</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/notifications.js"></script>
+  <script>
+    const searchIcon = document.getElementById('search-icon');
+    const searchForm = document.getElementById('search-form');
+    const searchInput = document.querySelector('#search-form input');
+
+    
+    searchIcon.addEventListener('click', function (e) {
+      e.preventDefault();
+      searchForm.style.display = searchForm.style.display === 'none' || searchForm.style.display === '' ? 'block' : 'none';
+    });
+
+    let allProducts = [];
+    fetch('/api/products')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(products => {
+        allProducts = products;
+        displayProducts(products);
+      })
+      .catch(err => console.error('Error fetching products:', err));
+
+    function displayProducts(products) {
+      const productList = document.getElementById('product-list');
+      productList.innerHTML = ''; 
+
+      products.forEach(product => {
+        const productDiv = document.createElement('div');
+        productDiv.classList.add('product');
+        productDiv.innerHTML = `
+          <img src="${product.image_url}" alt="${product.name}">
+          <div class="product-info">
+            <h2>${product.name}</h2>
+            <p>Category: ${product.category}</p>
+            <p>${product.description}</p> 
+            <p>Price: $${product.price}</p>
+            <button class="add-to-cart" data-id="${product._id}">Add to Cart</button>
+          </div>
+        `;
+        productList.appendChild(productDiv);
+
+        productDiv.addEventListener('click', function() {
+          this.classList.toggle('show-description');
+        });
+      });
+
+      document.querySelectorAll('.add-to-cart').forEach(button => {
+        button.addEventListener('click', (e) => {
+          const productId = e.target.dataset.id;
+          addToCart(productId);
+        });
+      });
+    }
+
+    function addToCart(productId) {
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      const product = allProducts.find(p => p._id === productId);
+
+      if (product) {
+        cart.push(product);
+        localStorage.setItem('cart', JSON.stringify(cart));
+       showToast("Product added to cart!", "success");
+      }
+    }
+
+
+    document.getElementById('category-buttons').addEventListener('click', (e) => {
+      if (e.target.classList.contains('category-btn')) {
+        const category = e.target.dataset.category;
+        if (category === 'all') {
+          displayProducts(allProducts);
+        } else {
+          const filteredProducts = allProducts.filter(product => product.category === category);
+          displayProducts(filteredProducts);
+        }
+      }
+    });
+
+    searchForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const searchTerm = searchInput.value.toLowerCase();
+
+      const filteredProducts = allProducts.filter(product => 
+        product.name.toLowerCase().includes(searchTerm)
+      );
+      displayProducts(filteredProducts);
+    });
+  </script>
+</body>
+
+</html>

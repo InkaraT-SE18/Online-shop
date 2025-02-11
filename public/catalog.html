@@ -82,7 +82,7 @@
     });
 
     let allProducts = [];
-    fetch(`${process.env.REACT_APP_API_URL}/api/products`)
+    fetch(`/api/products`)
       .then(response => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);

@@ -1,7 +1,9 @@
 # Online-shop
 📌 About the Project 
 Group:SE-2318
+
 Students: Temirkhanova Inkara, Eldana Daurenva, Aruzhan Yermekbaeva
+
 Elle(ClothingStore)is a women, modern online store offering stylish clothes. The project is designed with user convenience in mind and features an intuitive interface, secure payments, and managing orders with mongodb efficiently. 
 
 🚀 Features

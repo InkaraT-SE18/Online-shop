@@ -29,5 +29,5 @@ const productSchema = new mongoose.Schema({
     type : String,
   }
 });
-
+productSchema.index({ category: 1 });
 module.exports = mongoose.model("Product", productSchema);

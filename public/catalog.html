@@ -13,21 +13,21 @@
   <div id="toastContainer" class="toast-container position-fixed top-0 end-0 p-3"></div>
   <nav class="navbar">
     <div class="logo">
-      <a href="#">ClothingStore</a>
+      <a href="/index">ClothingStore</a>
     </div>
     <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="catalog.html">Catalog</a></li>
-      <li><a href="Gallery.html">Gallery</a></li>
+      <li><a href="/index">Home</a></li>
+      <li><a href="/catalog">Catalog</a></li>
+      <li><a href="/Gallery">Gallery</a></li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
           <img src="photo/person_24dp_434343_FILL0_wght600_GRAD0_opsz24.png" alt="Profile" class="nav-icon">
         </a>
         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <li><a class="dropdown-item" href="login.html">Login</a></li>
-          <li><a class="dropdown-item" href="register.html">Register</a></li>
-          <li><a class="dropdown-item" href="profile.html">My Profile</a></li>
-          <li><a class="dropdown-item" href="#">Logout</a></li>
+          <li><a class="dropdown-item" href="/login">Login</a></li>
+          <li><a class="dropdown-item" href="/register">Register</a></li>
+          <li><a class="dropdown-item" href="/profile">My Profile</a></li>
+          <li><a class="dropdown-item" href="/" id="logoutBtn">Logout</a></li>
         </ul>
       </li>
       <li><a href="#" id="search-icon"><img src="photo/search_24dp_434343_FILL0_wght700_GRAD0_opsz24.png" alt="search" class="nav-icon"></a></li>
@@ -49,10 +49,12 @@
     <button class="category-btn" data-category="Tops">Tops</button>
     <button class="category-btn" data-category="Bottoms">Bottoms</button>
     <button class="category-btn" data-category="Accessories">Accessories</button>
+    <button id="popular-products-btn" class="category-btn">Popular products</button>
   </div>
 
 
   <div id="product-list"></div>
+
 
   
   <footer>
@@ -82,7 +84,7 @@
     });
 
     let allProducts = [];
-    fetch(`/api/products`)
+    fetch('/api/products')
       .then(response => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -109,6 +111,7 @@
             <p>Category: ${product.category}</p>
             <p>${product.description}</p> 
             <p>Price: $${product.price}</p>
+            <p>Sell: ${product.count} times</p>
             <button class="add-to-cart" data-id="${product._id}">Add to Cart</button>
           </div>
         `;
@@ -160,6 +163,27 @@
       );
       displayProducts(filteredProducts);
     });
+
+    document.getElementById('popular-products-btn').addEventListener('click', function () {
+    fetch('/api/products/popular') // Запрос на популярные товары
+        .then(response => response.json())
+        .then(data => {
+            displayPopularProducts(data);
+            const modal = new bootstrap.Modal(document.getElementById('popularProductsModal'));
+            modal.show(); // Открываем модальное окно
+        })
+        .catch(error => console.error('Ошибка загрузки популярных товаров:', error));
+});
+
+document.getElementById('popular-products-btn').addEventListener('click', function () {
+    fetch('/api/products/popular')
+        .then(response => response.json())
+        .then(data => {
+            displayProducts(data);
+        })
+        .catch(error => console.error('Ошибка загрузки популярных товаров:', error));
+});
+
   </script>
 </body>
 

@@ -7,6 +7,7 @@ Students: Temirkhanova Inkara, Eldana Daurenva, Aruzhan Yermekbaeva
 Elle(ClothingStore)is a women, modern online store offering stylish clothes. The project is designed with user convenience in mind and features an intuitive interface, secure payments, and managing orders with mongodb efficiently. 
 
 🚀 Features
+
 🛒 For Users:
 Browse product catalog
 Filter and search functionality

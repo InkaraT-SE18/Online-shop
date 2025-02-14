@@ -16,11 +16,6 @@ Place orders
 Personal account
 Payment System
 
-🛠️ For Admins:
-Manage products (add, edit, delete)
-Manage users (change roles, edit profiles)
-Manage orders (update statuses, edit prices)
-
 🏗️ Technologies Used
 Frontend: HTML/CSS,Javascript, Bootstrap
 Backend: Node.js / Express 
